@@ -5,7 +5,7 @@
 \usepackage{alltt}
 \usepackage{boxedminipage}
 \usepackage{fancyhdr}
-\usepackage{lastSequpage}
+\usepackage{lastpage}
 \usepackage{hyperref}
 \usepackage{listings}
 
@@ -15,49 +15,33 @@
 %include lhs2TeX.fmt
 
 \pagestyle{fancy}
-\cfoot{\thepage\ of \pageref{lastSequPage}}
+\cfoot{\thepage\ of \pageref{LastPage}}
 \headheight 20pt
 \headsep 10pt
 
 \begin{document}
 
 
-\title{XHTML representation}
+\title{XHTML Representation}
 
 \author{Tim Pizey
 \\@Tim.Pizey@@gmail.com@
 \\
-\\Page count \pageref{lastSequPage}
+\\Page count \pageref{LastPage}
 }
 
 \maketitle
 \clearpage
-[Page intentionally left blank]
-\clearpage
 
-
-
-\section{Part I}
-\subsubsection{Setup}
-
-This section describes how to set the project up and what output to expect.
-
-Load this whole file into the Glasgow Haskell Compiler Interactive interface (GHCi).  
-
-Warning level is set to \emph{all}:
+\section{Setup}
 
 > {-# OPTIONS -Wall #-}
-
 
 > module XHTML (main) where 
 > import Control.Applicative
 > import Control.Monad
 
-\subsubsection{Testing}
-
-Rather than pasting the results of functions into the body of the text 
-equality assertions are used. These are run when the 
-file is compiled and executed (a much lighter version of \cite{hunit}). 
+\section{Testing}
 
 > type Assertion = Bool
 
@@ -80,18 +64,18 @@ file is compiled and executed (a much lighter version of \cite{hunit}).
 
 To test all  functions execute \emph{main}:
 \begin{verbatim}
-*FPR> main
+*xhtml> main
 OK
 \end{verbatim}
 
 \clearpage
 
+\section{A sequence type}
+
 > data Sequ a = Empty | Single a | Cat (Sequ a) (Sequ a) 
 >   deriving (Show, Eq, Ord)
 
-Two leaf trees are appended when the lists of their leaves 
-are concatSequenated.         
-
+> -- Append sequences 
 > (+++) :: Sequ a -> Sequ a -> Sequ a
 > (+++) Empty y = y
 > (+++) x Empty = x
@@ -197,9 +181,8 @@ are concatSequenated.
 >     (Cat (Cat (Single 'a') (Single 'b')) (Cat (Single 'c') (Single 'd')))
 >     (concatMapSequ (sequ) (Cat (Single "ab") (Single "cd"))) 
 
-\subsubsection{\emph{Sequ} as Functor}
+\subsection{\emph{Sequ} as Functor}
 
-\emph{Sequ} can be made an instance of \emph{Functor} \cite{classes}.
 
 > instance Functor Sequ where
 >  fmap _ Empty            = Empty
@@ -263,7 +246,6 @@ are concatSequenated.
 >              (reverseSequC (Cat (Single 'a') (Single 'b')))
 >
 
-\textbf{ lastSequ \emph{Sequ}}
 
 > lastSequC :: Sequ a -> a
 > lastSequC = consume id conj undefined where 
@@ -551,7 +533,7 @@ are concatSequenated.
 >   "abc"
 >   (charSequToString (Cat (Cat (Single 'a')(Single 'b')) (Single 'c')))
 
-\subsubsection{Element creation functions}
+\subsection{Element creation functions}
 
 > -- Create a simple text element
 > element :: String -> String -> XHTMLElement
@@ -720,9 +702,6 @@ If all tests pass then the page is written to the file system.
 > output :: IO()
 > output = do
 >        writeFile "test.xhtml" (charSequToString (showXHTMLPage testPage))
-
-The resulting xhtml file can be seen at \cite{output}
-and is shown valid at \cite{validated}. 
 
 
 \end{document}
