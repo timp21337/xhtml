@@ -1,1 +1,1 @@
-A representation of xhtml
+A representation of xhtml in Haskell
