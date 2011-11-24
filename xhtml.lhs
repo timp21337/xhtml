@@ -24,10 +24,8 @@
 
 \title{XHTML Representation}
 
-\author{Tim Pizey
-\\@Tim.Pizey@@gmail.com@
-\\
-\\Page count \pageref{LastPage}
+\author{Tim Pizey\\
+@Tim.Pizey@@gmail.com@
 }
 
 \maketitle
@@ -156,8 +154,6 @@ OK
 > test14 = assertEqual (Cat (Single (2::Int)) (Single (3::Int)))
 >          (mapSeq ((+)1) (Cat (Single (1::Int)) (Single (2::Int)))) 
 
-\subsubsection{concatSequ \emph{Sequ}}
-
 > concatSequ :: Sequ (Sequ a) -> Sequ a
 > concatSequ Empty            = Empty
 > concatSequ (Single a)       = a
@@ -181,9 +177,6 @@ OK
 >     (Cat (Cat (Single 'a') (Single 'b')) (Cat (Single 'c') (Single 'd')))
 >     (concatMapSequ (sequ) (Cat (Single "ab") (Single "cd"))) 
 
-\subsection{\emph{Sequ} as Functor}
-
-
 > instance Functor Sequ where
 >  fmap _ Empty            = Empty
 >  fmap f (Single x)       = Single (f x)
@@ -193,8 +186,6 @@ OK
 > test17 = assertEqual (Cat (Single "f-a") (Single "f-b")) 
 >              (fmap ((++) "f-") (Cat (Single "a") (Single "b")))
 
-\subsubsection{\emph{Sequ} as Applicative}
-
 > instance Applicative Sequ where
 >  pure  = return
 >  (<*>) = ap
@@ -202,8 +193,6 @@ OK
 > test18 :: Assertion
 > test18 = assertEqual (Cat (Single "f-a") (Single "f-b"))
 >     (pure ((++) "f-") <*> (Cat (Single "a") (Single "b")) )
-
-\subsubsection{\emph{Sequ} as Monad}
 
 > instance Monad Sequ where
 >  return = Single
